@@ -1,0 +1,354 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <title>Heart Disease Prediction</title>
+</head>
+
+<body>
+    <br>
+    <center><h1><a href="/" style="color: black;">Heart Disease Prediction</a></h1></center>
+    <br><br>
+    <div class="container">
+    {% if prediction=="No" %}
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <h4 class="alert-heading">No!!</h4>
+        <p>You don't have a Heart Disease.</p>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% elif prediction=='Yes' %}
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <h4 class="alert-heading">Yes :(</h4>
+        <p>You have a Heart Disease.</p>
+        <button  class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% endif %}
+    </div>
+    
+
+    <div class="container">
+    <form action="{{url_for('predict')}}" method="POST">
+    <div class="container">
+        <div class="form-group row">
+            <label for="bmi" class="col-sm-2 col-form-label"><h5>BMI</h5></label>
+            <div class="col-sm-10">
+                <input class="form-control" type="text" aria-label="default input example" id="bmi" name="bmi" required="required">
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="form-group row">
+            <label for="smoking" class="col-sm-2 col-form-label">
+                <h5>Smoking</h5>
+            </label>
+            <div class="col-sm-10 mt-2">
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" id="smoking" name="smoking" value="Yes" checked>
+                    <label class="form-check-label" for="smoking">Yes</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" id="smoking" name="smoking" value="No" checked>
+                    <label class="form-check-label" for="smoking">No</label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="form-group row">
+            <label for="alcohol_drinking" class="col-sm-2 col-form-label">
+                <h5>Alcohol Drinking</h5>
+            </label>
+            <div class="col-sm-10 mt-2">
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" id="alcohol_drinking" name="alcohol_drinking" value="Yes" checked>
+                    <label class="form-check-label" for="alcohol_drinking">Yes</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" id="alcohol_drinking" name="alcohol_drinking" value="No" checked>
+                    <label class="form-check-label" for="alcohol_drinking">No</label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="form-group row">
+            <label for="stroke" class="col-sm-2 col-form-label">
+                <h5>Stroke</h5>
+            </label>
+            <div class="col-sm-10 mt-2">
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" id="stroke" name="stroke" value="Yes" checked>
+                    <label class="form-check-label" for="stroke">Yes</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" id="stroke" name="stroke" value="No" checked>
+                    <label class="form-check-label" for="stroke">No</label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="form-group row">
+            <label for="physical_health" class="col-sm-2 col-form-label">
+                <h5>Physical Health</h5>
+            </label>
+            <div class="col-sm-10">
+                <input class="form-control" type="text" aria-label="default input example" id="physical_health"
+                    name="physical_health" required="required">
+            </div>
+        </div>
+    </div>
+    
+    <div class="container">
+        <div class="form-group row">
+            <label for="mental_health" class="col-sm-2 col-form-label">
+                <h5>Mental Health</h5>
+            </label>
+            <div class="col-sm-10">
+                <input class="form-control" type="text" aria-label="default input example" id="mental_health"
+                    name="mental_health" required="required">
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="form-group row">
+            <label for="diffwalking" class="col-sm-2 col-form-label">
+                <h5>DiffWalking</h5>
+            </label>
+            <div class="col-sm-10 mt-2">
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" id="diffwalking" name="diffwalking" value="Yes" checked>
+                    <label class="form-check-label"  for="diffwalking">Yes</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input"type="radio" id="diffwalking" name="diffwalking" value="No" checked>
+                    <label class="form-check-label" for="diffwalking">No</label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="form-group row">
+            <label for="sex" class="col-sm-2 col-form-label">
+                <h5>Sex</h5>
+            </label>
+            <div class="col-sm-10 mt-2">
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" id="sex" name="sex" value="Male" checked>
+                    <label class="form-check-label" for="sex">Male</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" id="sex" name="sex" value="Female" checked>
+                    <label class="form-check-label" for="sex">Female</label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="form-group row">
+            <label for="age_category" class="col-sm-2 col-form-label">
+                <h5>Age Category</h5>
+            </label>
+            <div class="col-sm-10">
+                <select class="form-select" aria-label="Default select example" id="age_category" name="age_category" required="required">
+                    <option value="0">18-24</option>
+                    <option value="1">25-29</option>
+                    <option value="2">30-34</option>
+                    <option value="3">35-39</option>
+                    <option value="4">40-44</option>
+                    <option value="5">45-49</option>
+                    <option value="6">50-54</option>
+                    <option value="7">55-59</option>
+                    <option value="8">60-64</option>
+                    <option value="9">65-69</option>
+                    <option value="10">70-74</option>
+                    <option value="11">75-79</option>
+                    <option value="12">80 or Older</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="form-group row">
+            <label for="race" class="col-sm-2 col-form-label">
+                <h5>Race</h5>
+            </label>
+            <div class="col-sm-10">
+                <select class="form-select" aria-label="Default select example" id="race" name="race"
+                    required="required">
+                    <option value="White">White</option>
+                    <option value="Black">Black</option>
+                    <option value="Asian">Asian</option>
+                    <option value="Hispanic">Hispanic</option>
+                    <option value="American_Indian">American Indian/Alaskan Native</option>
+                    <option value="Other">Other</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="form-group row">
+            <label for="diabetic" class="col-sm-2 col-form-label">
+                <h5>Diabetic</h5>
+            </label>
+            <div class="col-sm-10">
+                <select class="form-select" aria-label="Default select example" id="diabetic" name="diabetic" required="required">
+                    <option value="yes">Yes</option>
+                    <option value="no">No</option>
+                    <option value="no_boderline">No, borderline diabetes</option>
+                    <option value="yes_pregnancy">Yes (during pregnancy)</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="form-group row">
+            <label for="physical_activity" class="col-sm-2 col-form-label">
+                <h5>Physical Activity</h5>
+            </label>
+            <div class="col-sm-10 mt-2">
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" id="physical_activity" name="physical_activity" value="Yes" checked>
+                    <label class="form-check-label" for="physical_activity">Yes</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" id="physical_activity" name="physical_activity" value="No" checked>
+                    <label class="form-check-label" for="physical_activity">No</label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="form-group row">
+            <label for="gen_health" class="col-sm-2 col-form-label">
+                <h5>GenHealth</h5>
+            </label>
+            <div class="col-sm-10">
+                <select class="form-select" aria-label="Default select example" id="gen_health" name="gen_health"
+                    required="required">
+                    <option value="excellent">Excellent</option>
+                    <option value="very_good">Very Good</option>
+                    <option value="good">Good</option>
+                    <option value="fair">Fair</option>
+                    <option value="poor">Poor</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="form-group row">
+            <label for="sleeptime" class="col-sm-2 col-form-label">
+                <h5>Sleep Time</h5>
+            </label>
+            <div class="col-sm-10">
+                <input class="form-control" type="text" aria-label="default input example" id="sleeptime" name="sleeptime"
+                    required="required" placeholder="0-24 hrs ">
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="form-group row">
+            <label for="asthma" class="col-sm-2 col-form-label">
+                <h5>Asthma</h5>
+            </label>
+            <div class="col-sm-10 mt-2">
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio"id="asthma" name="asthma" value="Yes" checked>
+                    <label class="form-check-label" for="asthma">Yes</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" id="asthma" name="asthma" value="No" checked>
+                    <label class="form-check-label" for="asthma">No</label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="form-group row">
+            <label for="kidney_disease" class="col-sm-2 col-form-label">
+                <h5>Kidney Disease</h5>
+            </label>
+            <div class="col-sm-10 mt-2">
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" id="kidney_disease" name="kidney_disease" value="Yes" checked>
+                    <label class="form-check-label" for="kidney_disease">Yes</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" id="kidney_disease" name="kidney_disease" value="No" checked>
+                    <label class="form-check-label" for="kidney_disease">No</label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="form-group row">
+            <label for="skin_cancer" class="col-sm-2 col-form-label">
+                <h5>Skin Cancer</h5>
+            </label>
+            <div class="col-sm-10 mt-2">
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" id="skin_cancer" name="skin_cancer" value="Yes"
+                        checked>
+                    <label class="form-check-label" for="skin_cancer">Yes</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" id="skin_cancer" name="skin_cancer" value="No"
+                        checked>
+                    <label class="form-check-label" for="skin_cancer">No</label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <center><input type="submit" class="btn btn-primary mb-2" name="Predict"></center>
+    </form>
+    </div>
+    <br><br>
+
+    <style type="text/css">
+        body {
+            background: rgb(201, 229, 255) !important;
+        }
+    </style>
+
+    <!-- Optional JavaScript; choose one of the two! -->
+    <script>
+        if (window.history.replaceState) {
+            window.history.replaceState(null, null, window.location.href);
+        }
+    </script>
+    <!-- Option 1: Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+        crossorigin="anonymous"></script>
+
+    <!-- Option 2: Separate Popper and Bootstrap JS -->
+    <!--
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
+    -->
+</body>
+
+</html>
