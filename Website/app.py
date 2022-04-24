@@ -6,9 +6,9 @@ import pickle
 app = Flask(__name__)
 
 
-model=pickle.load(open('Website/lr_model_final.pkl','rb'))
+model=pickle.load(open('lr_model_final.pkl','rb'))
 
-dataset=pd.read_csv("Website/heart_2020_cleaned.csv")
+dataset=pd.read_csv("heart_2020_cleaned.csv")
 features_dataset=pd.get_dummies(dataset.drop('HeartDisease',axis=1))
 scaler=StandardScaler()
 scaled_features_dataset=scaler.fit_transform(features_dataset.values)
